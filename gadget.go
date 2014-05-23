@@ -38,9 +38,26 @@ func (g *Gadget) Owner() *Circuit {
         return g.owner
 }
 
+//Provide the gadgets 'name' as seen within the circuit its it.
 func (g *Gadget) Name() string {
         return g.name
 }
+
+//Provide the gadgets full circuit path seperated by '/' (does not include the gadgets name - see Name().
+func (g *Gadget) Path() (string) {
+
+	path := ""
+	p := g.owner
+	for {
+		if p == nil {
+			break
+		}
+		path = p.Gadget.Name() + "/" + path
+		p = p.Gadget.owner
+	}
+	return path
+}
+
 
 func (g *Gadget) pinValue(pin string) reflect.Value {
 	pp := pinPart(pin)

@@ -3,8 +3,8 @@ package flow_test
 import (
 	"strings"
 
-	"github.com/jcw/flow"
-	_ "github.com/jcw/flow/gadgets"
+	"github.com/laughlinez/flow"
+	_ "github.com/laughlinez/flow/gadgets"
 )
 
 func ExampleNewCircuit() {

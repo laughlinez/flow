@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jcw/flow"
+	"github.com/laughlinez/flow"
 )
 
 func ExamplePrinter() {

@@ -13,8 +13,8 @@ import (
 	"code.google.com/p/go.exp/fsnotify" // supposedly will be std in Go1.3
 
         "github.com/golang/glog"
-	"github.com/jcw/flow"
-	_ "github.com/jcw/flow/gadgets/pipe"
+	"github.com/laughlinez/flow"
+	_ "github.com/laughlinez/flow/gadgets/pipe"
 
 )
 

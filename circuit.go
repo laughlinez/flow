@@ -5,6 +5,8 @@ import (
 	"sync"
 
 	"github.com/golang/glog"
+
+	api "github.com/laughlinez/flow/api"
 )
 
 // Initialise a new circuit.
@@ -92,7 +94,19 @@ func (c *Circuit) Label(external, internal string) {
 
 // Start up the circuit, and return when it is finished.
 func (c *Circuit) Run() {
+
+	fopts := api.NewFlowAPIOptions()
+
 	for _, g := range c.gadgets {
+		if err := api.IsAPIProvider(g.circuitry,fopts);err != nil {
+			glog.Fatalln(err)
+		}
+	}
+
+	for _, g := range c.gadgets {
+		if err := api.InjectAPI(g.circuitry, fopts);err != nil {
+			glog.Fatalln(err)
+		}
 		g.launch()
 	}
 	c.wait.Wait()

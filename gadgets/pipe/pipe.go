@@ -2,7 +2,7 @@
 package gadgets
 
 import (
-	"github.com/jcw/flow"
+	"github.com/laughlinez/flow"
 )
 
 func init() {
