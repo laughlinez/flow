@@ -3,9 +3,7 @@ package flow
 import (
 	"strings"
 	"sync"
-
 	"github.com/golang/glog"
-
 	api "github.com/laughlinez/flow/api"
 )
 
@@ -92,16 +90,34 @@ func (c *Circuit) Label(external, internal string) {
 	c.labels[external] = internal
 }
 
+var initProviders sync.Once
 // Start up the circuit, and return when it is finished.
 func (c *Circuit) Run() {
 
 	fopts := api.NewFlowAPIOptions()
 
-	for _, g := range c.gadgets {
-		if err := api.IsAPIProvider(g.circuitry,fopts);err != nil {
-			glog.Fatalln(err)
+	initProviders.Do( func() {
+		for k, c := range Registry {
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+					}
+				}()
+				//TODO: ASSUMPTION - compound gadget begins with lowerCase?
+				//need a better way to determine this
+				//Also gadgetFor() should ideally return error to caller so this code can be cleaner
+				if k[0] != strings.ToLower(string(k[0]))[0] {
+					g := c()
+					_ = g
+					if err := api.IsAPIProvider(g, fopts); err != nil {
+						glog.Fatalln(err)
+					}
+				} else {
+					glog.Warningln("Skipping Provider Assignments (subcircuit?) for :", k)
+				}
+			}()
 		}
-	}
+	})
 
 	for _, g := range c.gadgets {
 		if err := api.InjectAPI(g.circuitry, fopts);err != nil {
